@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import {  Observable, ReplaySubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { AnimalService } from 'src/@shared/services/animal.service';
-import { Animal } from 'src/@shared/models/animals';
+import { AnimalService } from 'src/@shared/services/cattle-events.service';
+import { CattleEvent } from 'src/@shared/models/cattle-event';
 @Component({
   selector: 'app-cattle',
   templateUrl: './cattle.component.html',
@@ -11,7 +11,7 @@ import { Animal } from 'src/@shared/models/animals';
 })
 export class CattleComponent implements OnInit {
   private getData: ReplaySubject<any> = new ReplaySubject<any>(1);
-  public cattleEvents$: Observable<Animal[]> = this.getData.pipe(switchMap(evt => this.animalService.getAminals().pipe(map(x => x.result))))
+  public cattleEvents$: Observable<CattleEvent[]> = this.getData.pipe(switchMap(evt => this.animalService.getCattleEvents().pipe(map(x => x.result))))
   public columns: any[] = [
     { field: 'eventId', header: 'Event Id', editable: false },
     { field: 'cowId', header: 'Cow Id' },
@@ -55,16 +55,16 @@ export class CattleComponent implements OnInit {
     this.getData.next();
   }
 
-  public addCattleEvent(evt: Animal) {
-    this.animalService.addAnimal(evt).subscribe(res => this.getData.next())
+  public addCattleEvent(evt: CattleEvent) {
+    this.animalService.addCattleEvents(evt).subscribe(res => this.getData.next())
   }
 
-  public deleteCattleEvent(evt: Animal) {
-    this.animalService.deleteAnimal(evt.eventId).subscribe(res => this.getData.next())
+  public deleteCattleEvent(evt: CattleEvent) {
+    this.animalService.deleteCattleEvents(evt.eventId).subscribe(res => this.getData.next())
   }
 
-  public updateCattleEvent(evt: Animal) {
-    this.animalService.editAnimal(evt).subscribe(res => this.getData.next())
+  public updateCattleEvent(evt: CattleEvent) {
+    this.animalService.editCattleEvents(evt).subscribe(res => this.getData.next())
   }
 
 }

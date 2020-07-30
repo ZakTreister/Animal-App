@@ -1,5 +1,5 @@
 
-export interface Animal {
+export interface CattleEvent {
     cowId: number;
     animalId: string;
     healthIndex: number;
@@ -40,7 +40,7 @@ export interface AppResponse {
     offset: number;
     limit: number;
     total: number;
-    result: Animal[];
+    result: CattleEvent[];
 }
 
 

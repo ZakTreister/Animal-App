@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
-import { AnimalService } from 'src/@shared/services/animal.service';
+import { AnimalService } from 'src/@shared/services/cattle-events.service';
 import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Animal } from 'src/@shared/models/animals';
+import { CattleEvent } from 'src/@shared/models/cattle-event';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -60,12 +60,12 @@ export class TableComponent implements OnInit {
     this.group = null;
   }
 
-  openCellEdit(animal: Animal, field: string) {
-    this.idInEdit = animal.eventId;
+  openCellEdit(item: CattleEvent, field: string) {
+    this.idInEdit = item[this.dataKey];
     this.fieldInEdit = field;
     let group = this.fb.group({
-      [this.dataKey]: this.fb.control(animal.eventId),
-      [field]: this.fb.control(animal[field])
+      [this.dataKey]: this.fb.control(item[this.dataKey]),
+      [field]: this.fb.control(item[field])
     })
     this.editGroup = group;
   }
