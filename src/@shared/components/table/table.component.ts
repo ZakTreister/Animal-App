@@ -1,7 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
-import { AnimalService } from 'src/@shared/services/cattle-events.service';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { CattleEvent } from 'src/@shared/models/cattle-event';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -28,8 +25,7 @@ export class TableComponent implements OnInit {
   public idInEdit: number;
 
 
-  constructor(private fb: FormBuilder,
-    private cd: ChangeDetectorRef) { }
+  constructor(private fb: FormBuilder ) { }
 
   ngOnInit(): void { }
 
@@ -39,8 +35,8 @@ export class TableComponent implements OnInit {
 
   public saveNewRow() {
     let values = this.group.value;
-    this.group = null;
     this.addItem.emit(values);
+    this.closeCell();
   }
 
   public openAddRow() {
@@ -60,7 +56,7 @@ export class TableComponent implements OnInit {
     this.group = null;
   }
 
-  openCellEdit(item: CattleEvent, field: string) {
+  public openCellEdit(item: CattleEvent, field: string) {
     this.idInEdit = item[this.dataKey];
     this.fieldInEdit = field;
     let group = this.fb.group({
@@ -79,6 +75,5 @@ export class TableComponent implements OnInit {
     this.idInEdit = null;
     this.fieldInEdit = '';
     this.editGroup = null;
-    this.cd.markForCheck()
   }
 }
