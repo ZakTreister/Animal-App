@@ -1,0 +1,50 @@
+<form class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          <button class="btn btn-info" type="button" (click)="openAddRow()">Add</button>
+        </th>
+        <th scope="col" *ngFor="let col of columns">{{col.header}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="group" [formGroup]="group">
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-success" type="button" (click)="saveNewRow()">Save</button>
+            <button class="btn btn-danger" type="button" (click)="closeNewRow()">&times;</button>
+          </div>
+        </td>
+        <td *ngFor="let col of columns">
+          <input *ngIf="col.editable != false" type="text" class="form-control" [formControlName]="col.field">
+        </td>
+      </tr>
+      <tr *ngFor="let animal of animals$ | async">
+        <td>
+          <button class="btn btn-danger" type="button" (click)="delete(animal)">Delete</button>
+        </td>
+        <ng-container *ngFor="let col of columns">
+          <ng-template #cell>
+            <td (click)="openCellEdit(animal,col.field)" class="align-middle">
+              {{animal[col.field] || ''}}
+            </td>
+          </ng-template>
+          <td *ngIf="idInEdit == animal.eventId && fieldInEdit == col.field; else cell">
+            <div class="input-group" [formGroup]="editGroup">
+              <input type="text" class="form-control" [formControlName]="col.field">
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="saveCell()">
+                  <i class="far fa-save"></i>
+                </span>
+                <span class="input-group-text" (click)="closeCell()">
+                  <i class="far fa-window-close"></i>
+                </span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</form>
