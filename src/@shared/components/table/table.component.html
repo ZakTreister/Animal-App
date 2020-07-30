@@ -29,7 +29,7 @@
             <td (click)="col.editable != false && openCellEdit(item,col.field)" class="align-middle" [ngClass]="{
               'pointer' : col.editable != false
             }">
-              {{item[col.field] || ''}}
+              {{item[col.field]}}
             </td>
           </ng-template>
           <td *ngIf="idInEdit == item[dataKey] && fieldInEdit == col.field; else cell">
