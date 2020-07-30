@@ -1,21 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import {  Observable, ReplaySubject } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { AnimalService } from 'src/@shared/services/animal.service';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { Animal } from 'src/@shared/models/animals';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  selector: 'app-cattle',
+  templateUrl: './cattle.component.html',
+  styleUrls: ['./cattle.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableComponent implements OnInit {
+export class CattleComponent implements OnInit {
   private getData: ReplaySubject<any> = new ReplaySubject<any>(1);
-  public animals$: Observable<Animal[]> = this.getData.pipe(switchMap(evt => this.animalService.getAminals().pipe(map(x => x.result))))
+  public cattleEvents$: Observable<Animal[]> = this.getData.pipe(switchMap(evt => this.animalService.getAminals().pipe(map(x => x.result))))
   public columns: any[] = [
-    { field: 'eventId', header: 'Eevent Id', editable: false },
+    { field: 'eventId', header: 'Event Id', editable: false },
     { field: 'cowId', header: 'Cow Id' },
     { field: 'animalId', header: 'Animal Id' },
     { field: 'healthIndex', header: 'Health Index' },
@@ -51,64 +49,22 @@ export class TableComponent implements OnInit {
     { field: 'interval', header: 'Interval' },
   ]
 
-  public group: FormGroup;
-  public editGroup: FormGroup;
-  public fieldInEdit: string;
-  public idInEdit: number;
-
-
-  constructor(private animalService: AnimalService,
-    private fb: FormBuilder,
-    private cd:ChangeDetectorRef) { }
-
+  constructor(private animalService: AnimalService) { }
+  
   ngOnInit(): void {
     this.getData.next();
   }
 
-  public delete(animal: Animal) {
-    this.animalService.deleteAnimal(animal.eventId).subscribe(() => this.getData.next())
+  public addCattleEvent(evt: Animal) {
+    this.animalService.addAnimal(evt).subscribe(res => this.getData.next())
   }
 
-  public saveNewRow() {
-    let values = this.group.value;
-    this.group = null;
-    this.animalService.addAnimal(values).subscribe(() => this.getData.next())
+  public deleteCattleEvent(evt: Animal) {
+    this.animalService.deleteAnimal(evt.eventId).subscribe(res => this.getData.next())
   }
 
-  public openAddRow() {
-    let group = this.fb.group({});
-    for (let i = 0; i < this.columns.length; i++) {
-      const col = this.columns[i];
-      if (col.editable != false) {
-        group.addControl(col.field, this.fb.control(''))
-      }
-    }
-    this.group = group;
+  public updateCattleEvent(evt: Animal) {
+    this.animalService.editAnimal(evt).subscribe(res => this.getData.next())
   }
 
-  public closeNewRow() {
-    this.group = null;
-  }
-
-  openCellEdit(animal: Animal, field: string) {
-    this.idInEdit = animal.eventId;
-    this.fieldInEdit = field;
-    let group = this.fb.group({
-      'eventId': this.fb.control(animal.eventId),
-      [field]: this.fb.control(animal[field])
-    })
-    this.editGroup = group;
-  }
-  public saveCell() {
-    let editedVal = this.editGroup.value;
-    this.animalService.editAnimal(editedVal).subscribe(() => this.getData.next());
-    this.closeCell();
-  }
-
-  public closeCell() {
-    this.idInEdit = null;
-    this.fieldInEdit = '';
-    this.editGroup = null;
-    this.cd.markForCheck()
-  }
 }

@@ -1,0 +1,3 @@
+<h1>Animal events</h1>
+<app-table [columns]="columns" dataKey="eventId" [items]="cattleEvents$ | async" (addItem)="addCattleEvent($event)"
+    (deleteItem)="deleteCattleEvent($event)" (updateItem)="updateCattleEvent($event)"></app-table>
