@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-
-import * as CattleEvents from 'src/assets/animals.json';
+import { ExampleData } from './data';
 import { AppResponse, CattleEvent } from 'src/@shared/models/cattle-event'
 @Injectable({
   providedIn: 'root'
 })
 export class DataInterceptorService implements HttpInterceptor {
-  private _data: AppResponse;
+  private _data: AppResponse<CattleEvent>;
 
   constructor() {
-    this._data = CattleEvents['default'];
+    this._data = ExampleData;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -70,8 +69,8 @@ export class DataInterceptorService implements HttpInterceptor {
     }
   }
 
-  private getCattleEvents(params: any): Observable<HttpEvent<AppResponse>> {
-    let body: AppResponse = {
+  private getCattleEvents(params: any): Observable<HttpEvent<AppResponse<CattleEvent>>> {
+    let body: AppResponse<CattleEvent> = {
       limit: 100,
       offset: 0,
       result: this._data.result.slice(0, 100),

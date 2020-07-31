@@ -36,7 +36,7 @@ export class TableComponent implements OnInit {
   public saveNewRow() {
     let values = this.group.value;
     this.addItem.emit(values);
-    this.closeCell();
+    this.closeNewRow();
   }
 
   public openAddRow() {

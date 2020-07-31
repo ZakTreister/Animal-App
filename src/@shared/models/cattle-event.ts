@@ -1,34 +1,34 @@
-
 export interface CattleEvent {
+
     cowId: number;
-    animalId: string;
-    healthIndex: number;
+    animalId?: string;
+    healthIndex?: number;
     endDate?: number;
-    minValueDateTime: number;
-    type: string;
+    minValueDateTime?: number;
+    type?: string;
     eventId: number;
-    deletable: boolean;
-    lactationNumber: number;
-    daysInLactation: number;
-    ageInDays: number;
-    startDateTime: number;
-    reportingDateTime: number;
-    alertType: string;
+    deletable?: boolean;
+    lactationNumber?: number;
+    daysInLactation?: number;
+    ageInDays?: number;
+    startDateTime?: number;
+    reportingDateTime?: number;
+    alertType?: string;
     duration?: number;
     originalStartDateTime?: any;
     endDateTime?: number;
     daysInPregnancy?: number;
-    heatIndexPeak: string;
+    heatIndexPeak?: string;
     newGroupId?: number;
-    newGroupName: string;
+    newGroupName?: string;
     currentGroupId?: number;
-    currentGroupName: string;
+    currentGroupName?: string;
     destinationGroup?: number;
-    destinationGroupName: string;
+    destinationGroupName?: string;
     calvingEase?: any;
     oldLactationNumber?: number;
     newborns?: any;
-    cowEntryStatus: string;
+    cowEntryStatus?: string;
     birthDateCalculated?: boolean;
     sire?: any;
     breedingNumber?: number;
@@ -36,11 +36,11 @@ export interface CattleEvent {
     interval?: number;
 }
 
-export interface AppResponse {
+export interface AppResponse<T> {
     offset: number;
     limit: number;
     total: number;
-    result: CattleEvent[];
+    result: T[];
 }
 
 

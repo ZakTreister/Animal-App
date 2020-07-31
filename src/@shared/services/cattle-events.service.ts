@@ -11,8 +11,8 @@ export class AnimalService {
 
   constructor(private http: HttpClient) { }
 
-  public getCattleEvents(): Observable<AppResponse> {
-    return this.http.get<AppResponse>(`GetCattleEvents`)
+  public getCattleEvents(): Observable<AppResponse<CattleEvent>> {
+    return this.http.get<AppResponse<CattleEvent>>(`GetCattleEvents`)
   }
 
   public deleteCattleEvents(eventId: number) {
@@ -21,7 +21,7 @@ export class AnimalService {
   }
 
   public addCattleEvents(values: any) {
-    return this.http.post('AddAniaml', values);
+    return this.http.post('AddCattleEvent', values);
   }
 
   public editCattleEvents(values: Partial<CattleEvent>) {
